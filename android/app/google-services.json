@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "116412658576",
+    "project_id": "edusync-firebase-915d5",
+    "storage_bucket": "edusync-firebase-915d5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:116412658576:android:42fb0936f4ff14525fb915",
+        "android_client_info": {
+          "package_name": "com.example.kelompok_3"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtYeAJyAQAcSjFEW8g53EUKFuDa3o-qyk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
