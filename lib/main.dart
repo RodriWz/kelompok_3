@@ -24,18 +24,10 @@ class EduSyncApp extends StatelessWidget {
       title: 'EduSync',
       debugShowCheckedModeBanner: false,
       
-      // Menggunakan JurusanPage sebagai halaman awal
-      home: SignInPage(), 
       
-      // Jika Anda ingin menggunakan routing bernama (opsional):
-      // routes: {
-      //   '/signin': (context) => const SignInPage(),
-      //   '/jurusan': (context) => JurusanPage(),
-      // },
-      // initialRoute: '/jurusan', 
+      home: SignInPage(), 
+    
     );
   }
 }
 
-// Catatan: Pastikan kelas SignInPage dan JurusanPage sudah didefinisikan 
-// dalam file yang diimpor ('screens/sign_in_page.dart' dan 'screens/jurusan_page.dart').
