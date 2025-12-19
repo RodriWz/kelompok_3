@@ -21,9 +21,6 @@ class EduSyncApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Kita dapat menambahkan StreamBuilder atau FutureBuilder di sini 
-    // untuk menangani status autentikasi atau koneksi awal,
-    // tetapi untuk saat ini, kita jalankan langsung halaman awal.
     return MaterialApp(
       title: 'EduSync',
       debugShowCheckedModeBanner: false,
