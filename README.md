@@ -1,9 +1,5 @@
 # 📘 Panduan GitHub: Clone Repo, Push, dan Pull Request
 
-Panduan ini dibuat untuk **pemula / anak PKL / mahasiswa** agar memahami alur kerja GitHub yang **aman dan benar**, terutama ketika branch `main` dilindungi.
-
----
-
 ## 🧰 Persiapan Awal
 
 Pastikan sudah terinstall:
@@ -196,4 +192,3 @@ Pull Request
 
 ---
 
-✍️ **Dibuat untuk pembelajaran Git & GitHub**
