@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kelompok_3/screens/jurusan_page.dart';
 import 'sign_up_page.dart';
 import 'forgot_password_page.dart';
 import 'home_page.dart';
@@ -34,7 +35,7 @@ class _SignInPageState extends State<SignInPage> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const HomePage()),
+        MaterialPageRoute(builder: (_) => const PilihJurusanListPage()),
       );
 
     } on FirebaseAuthException catch (e) {
@@ -143,7 +144,7 @@ class _SignInPageState extends State<SignInPage> {
                     MaterialPageRoute(builder: (_) => SignUpPage()),
                   );
                 },
-                child: const Text("Don’t have an account? Sign up"),
+                child: const Text("Dont have an account? Sign up"),
               ),
             ],
           ),

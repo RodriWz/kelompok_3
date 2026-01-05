@@ -1,132 +1,136 @@
 import 'package:flutter/material.dart';
-import 'package:kelompok_3/screens/sign_in_page.dart';
+import 'package:kelompok_3/screens/login_succes.dart';
 
-class SuccesForm extends StatelessWidget {
-  const SuccesForm({super.key});
+class PilihJurusanListPage extends StatelessWidget {
+  const PilihJurusanListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF5C6BC0),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF5C6BC0),
-        elevation: 0,
-        title: const Text(
-          "SUCCESS",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+      backgroundColor: const Color(0xFF142B6F),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 20),
+              const Center(
+                child: Text(
+                  'PILIH JURUSAN ANDA',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 30),
+              Expanded(
+                child: ListView(
+                  children: const [
+                    JurusanTile(title: 'PPLG', asset: 'assets/icon/pplg.png', active: true),
+                    JurusanTile(title: 'TKJ', asset: 'assets/icon/tkj.png'),
+                    JurusanTile(title: 'AKL', asset: 'assets/icon/akl.png'),
+                    JurusanTile(title: 'MPLB', asset: 'assets/icon/mplb.png'),
+                    JurusanTile(title: 'APHP', asset: 'assets/icon/aphp.png'),
+                    JurusanTile(title: 'PM', asset: 'assets/icon/pm.png'),
+                    JurusanTile(title: 'DKV', asset: 'assets/icon/dkv.png'),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
-        centerTitle: true,
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          // Logo / Icon
-          Center(
-            child: Container(
-              width: 120,
-              height: 120,
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.check_circle,
-                size: 70,
-                color: Colors.white,
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 24),
-
-          const Center(
-            child: Text(
-              "Congrats!",
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 12),
-
-          const Center(
-            child: Text(
-              "Your profile is ready to use",
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.white70,
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 32),
-
-          // Tombol mirip jurusanButton
-          succesButton(
-            title: "Go To Homepage",
-            icon: Icons.home,
-            onPressed: () {
-              // Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
-            },
-          ),
-          succesButton(
-            title: "Choose Major (Jurusan)",
-            icon: Icons.school,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const SignInPage()),
-              );
-            },
-          ),
-          succesButton(
-            title: "Skip for now",
-            icon: Icons.skip_next,
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
       ),
     );
   }
+}
 
-  Widget succesButton({
-    required String title,
-    required IconData icon,
-    required VoidCallback onPressed,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 18),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
-          shape: RoundedRectangleBorder(
+class JurusanTile extends StatelessWidget {
+  final String title;
+  final String asset;
+  final bool active;
+
+  const JurusanTile({
+    super.key,
+    required this.title,
+    required this.asset,
+    this.active = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: active
+          ? () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const CongratsEduSyncPage(),
+                ),
+              );
+            }
+          : null,
+      child: Opacity(
+        opacity: active ? 1 : 0.6,
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          decoration: BoxDecoration(
+            color: Colors.white,
             borderRadius: BorderRadius.circular(18),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 8,
+                offset: Offset(0, 4),
+              ),
+            ],
           ),
-          elevation: 6,
-          shadowColor: Colors.black.withOpacity(0.3),
-        ),
-        onPressed: onPressed,
-        child: Row(
-          children: [
-            Icon(icon, size: 40, color: const Color(0xFF5C6BC0)),
-            const SizedBox(width: 20),
-            Expanded(
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+          child: Row(
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.grey.shade100,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(6),
+                  child: Image.asset(asset, fit: BoxFit.contain),
                 ),
               ),
-            ),
-          ],
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    if (!active)
+                      const Text(
+                        'comming soon...',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              if (active)
+                const Icon(Icons.arrow_forward_ios, size: 16),
+            ],
+          ),
         ),
       ),
     );

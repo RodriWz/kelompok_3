@@ -1,132 +1,92 @@
 import 'package:flutter/material.dart';
-import 'package:kelompok_3/screens/sign_in_page.dart';
+import 'package:kelompok_3/screens/home_page.dart';
 
-class SuccesForm extends StatelessWidget {
-  const SuccesForm({super.key});
+class CongratsEduSyncPage extends StatelessWidget {
+  const CongratsEduSyncPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF5C6BC0),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF5C6BC0),
-        elevation: 0,
-        title: const Text(
-          "SUCCESS",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-        ),
-        centerTitle: true,
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          // Logo / Icon
-          Center(
-            child: Container(
-              width: 120,
-              height: 120,
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.check_circle,
-                size: 70,
-                color: Colors.white,
-              ),
-            ),
-          ),
+      backgroundColor: const Color(0xFF142B6F),
+      body: SafeArea(
+        child: SizedBox(
+          width: double.infinity,
+          child: Column(
+            children: [
+              const Spacer(),
 
-          const SizedBox(height: 24),
-
-          const Center(
-            child: Text(
-              "Congrats!",
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 12),
-
-          const Center(
-            child: Text(
-              "Your profile is ready to use",
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.white70,
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 32),
-
-          // Tombol mirip jurusanButton
-          succesButton(
-            title: "Go To Homepage",
-            icon: Icons.home,
-            onPressed: () {
-              // Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
-            },
-          ),
-          succesButton(
-            title: "Choose Major (Jurusan)",
-            icon: Icons.school,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const SignInPage()),
-              );
-            },
-          ),
-          succesButton(
-            title: "Skip for now",
-            icon: Icons.skip_next,
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget succesButton({
-    required String title,
-    required IconData icon,
-    required VoidCallback onPressed,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 18),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
-          ),
-          elevation: 6,
-          shadowColor: Colors.black.withOpacity(0.3),
-        ),
-        onPressed: onPressed,
-        child: Row(
-          children: [
-            Icon(icon, size: 40, color: const Color(0xFF5C6BC0)),
-            const SizedBox(width: 20),
-            Expanded(
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+              // ===== CENTER CONTENT =====
+              Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(24),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Image(
+                            image: AssetImage('assets/icon/app_icon1.png'),
+                            height: 150,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Text(
+                      'Congrats!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Color(0xFF2BFF4A),
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 7),
+                    const Text(
+                      'Your profile is ready to use',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white70, fontSize: 15),
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ],
+
+              const Spacer(),
+
+              // ===== BUTTON =====
+              Padding(
+                padding: const EdgeInsets.only(bottom: 32),
+                child: Center(
+                  child: SizedBox(
+                    width: 260,
+                    height: 48,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        elevation: 4,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => HomePage(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        'Go To Homepage',
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
