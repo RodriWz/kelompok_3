@@ -25,9 +25,19 @@ class HomePage extends StatelessWidget {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Icon(Icons.school, color: Colors.white),
-                    Icon(Icons.notifications_none, color: Colors.white),
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        debugPrint('Icon sekolah diklik');
+                      },
+                      icon: const Icon(Icons.school, color: Colors.white),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        debugPrint('Notifikasi diklik');
+                      },
+                      icon: const Icon(Icons.notifications_none, color: Colors.white),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -66,18 +76,27 @@ class HomePage extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: Row(
-                  children: const [
-                    Icon(Icons.search, color: Colors.grey),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        'Cari',
-                        style: TextStyle(color: Colors.grey),
+                child: TextButton(
+                  onPressed: () {
+                    debugPrint('Search diklik');
+                  },
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    alignment: Alignment.centerLeft,
+                  ),
+                  child: Row(
+                    children: const [
+                      Icon(Icons.search, color: Colors.grey),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          'Cari',
+                          style: TextStyle(color: Colors.grey),
+                        ),
                       ),
-                    ),
-                    Icon(Icons.close, size: 18, color: Colors.grey),
-                  ],
+                      Icon(Icons.close, size: 18, color: Colors.grey),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -86,42 +105,79 @@ class HomePage extends StatelessWidget {
           // ===== CONTENT =====
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: ListView(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
-                      Text('Kategori', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                      Text(
+                        'Kategori',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
                       Icon(Icons.view_list),
                     ],
                   ),
                   const SizedBox(height: 16),
+
+                  // ===== KATEGORI BUTTON =====
                   Row(
-                    children: const [
-                      _KategoriBox(text: 'X'),
-                      SizedBox(width: 12),
-                      _KategoriBox(text: 'XI'),
-                      SizedBox(width: 12),
-                      _KategoriBox(text: 'XII'),
+                    children: [
+                      KategoriButton(
+                        text: 'X',
+                        onPressed: () {
+                          debugPrint('Kategori X diklik');
+                        },
+                      ),
+                      const SizedBox(width: 12),
+                      KategoriButton(
+                        text: 'XI',
+                        onPressed: () {
+                          debugPrint('Kategori XI diklik');
+                        },
+                      ),
+                      const SizedBox(width: 12),
+                      KategoriButton(
+                        text: 'XII',
+                        onPressed: () {
+                          debugPrint('Kategori XII diklik');
+                        },
+                      ),
                     ],
                   ),
+
                   const SizedBox(height: 30),
                   const Divider(),
                   const SizedBox(height: 16),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
-                      Text('New', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                      Text(
+                        'New',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
                       Icon(Icons.arrow_forward_ios, size: 16),
                     ],
                   ),
                   const SizedBox(height: 16),
-                  Container(
-                    height: 140,
-                    decoration: BoxDecoration(
-                      color: Colors.black87,
-                      borderRadius: BorderRadius.circular(16),
+
+                  // ===== CARD =====
+                  ElevatedButton(
+                    onPressed: () {
+                      debugPrint('Card New diklik');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      backgroundColor: Colors.black87,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    child: Container(
+                      height: 140,
+                      width: double.infinity,
                     ),
                   ),
                 ],
@@ -143,16 +199,30 @@ class HomePage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Icon(Icons.chat_bubble_outline),
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: const BoxDecoration(
-                color: Color(0xFF8EA0FF),
-                shape: BoxShape.circle,
+            IconButton(
+              onPressed: () {
+                debugPrint('Chat diklik');
+              },
+              icon: const Icon(Icons.chat_bubble_outline),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                debugPrint('Home diklik');
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF8EA0FF),
+                shape: const CircleBorder(),
+                padding: const EdgeInsets.all(12),
+                elevation: 0,
               ),
               child: const Icon(Icons.home, color: Colors.black),
             ),
-            Icon(Icons.person_outline),
+            IconButton(
+              onPressed: () {
+                debugPrint('Profile diklik');
+              },
+              icon: const Icon(Icons.person_outline),
+            ),
           ],
         ),
       ),
@@ -160,23 +230,39 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class _KategoriBox extends StatelessWidget {
+// ===== KATEGORI BUTTON =====
+class KategoriButton extends StatelessWidget {
   final String text;
-  const _KategoriBox({required this.text});
+  final VoidCallback onPressed;
+
+  const KategoriButton({
+    super.key,
+    required this.text,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 60,
       height: 60,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: Colors.black87,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.black87,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          padding: EdgeInsets.zero,
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }
