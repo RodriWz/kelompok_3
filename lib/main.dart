@@ -15,17 +15,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  // 1. Pastikan Flutter Binding siap
-  // Ini harus dipanggil sebelum memanggil metode Flutter lainnya, 
-  // termasuk inisialisasi Firebase.
   WidgetsFlutterBinding.ensureInitialized();
   
-  // 2. Inisialisasi Firebase secara asynchronous
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   
-  // 3. Jalankan aplikasi setelah Firebase siap
   runApp(const EduSyncApp());
 }
 
@@ -43,5 +39,3 @@ class EduSyncApp extends StatelessWidget {
   }
 }
 
-// Catatan: Pastikan kelas SignInPage dan JurusanPage sudah didefinisikan 
-// dalam file yang diimpor ('screens/sign_in_page.dart' dan 'screens/jurusan_page.dart').
