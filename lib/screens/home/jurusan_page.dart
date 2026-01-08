@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kelompok_3/screens/login_succes.dart';
+import 'package:kelompok_3/screens/auth/login_succes.dart';
 
 class PilihJurusanListPage extends StatelessWidget {
   const PilihJurusanListPage({super.key});

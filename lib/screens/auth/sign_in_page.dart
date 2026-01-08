@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:kelompok_3/screens/jurusan_page.dart';
+import 'package:kelompok_3/screens/home/jurusan_page.dart';
 import 'sign_up_page.dart';
 import 'forgot_password_page.dart';
-import 'home_page.dart';
+
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
