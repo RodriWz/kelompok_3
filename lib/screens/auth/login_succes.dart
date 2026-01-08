@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:kelompok_3/screens/home_page.dart';
+import 'package:kelompok_3/utils/app_routes.dart';
 
 class CongratsEduSyncPage extends StatelessWidget {
-  const CongratsEduSyncPage({super.key});
+  final String? email; 
+  
+  const CongratsEduSyncPage({
+    super.key,
+    this.email,
+  });
 
   @override
   Widget build(BuildContext context) {
+    // Ambil email dari arguments jika tidak ada di constructor
+    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final userEmail = email ?? args?['email'];
+
     return Scaffold(
       backgroundColor: const Color(0xFF142B6F),
       body: SafeArea(
@@ -20,6 +29,7 @@ class CongratsEduSyncPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    // App Icon
                     Container(
                       padding: const EdgeInsets.all(24),
                       child: Column(
@@ -32,6 +42,8 @@ class CongratsEduSyncPage extends StatelessWidget {
                         ],
                       ),
                     ),
+
+                    // Congrats Text
                     const Text(
                       'Congrats!',
                       textAlign: TextAlign.center,
@@ -42,10 +54,29 @@ class CongratsEduSyncPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 7),
+                    
+                    // Tampilkan email jika ada (optional)
+                    if (userEmail != null) ...[
+                      Text(
+                        userEmail,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: Color(0xFF2BFF4A),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(height: 7),
+                    ],
+                    
+                    // Description
                     const Text(
                       'Your profile is ready to use',
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white70, fontSize: 15),
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 15,
+                      ),
                     ),
                   ],
                 ),
@@ -70,16 +101,19 @@ class CongratsEduSyncPage extends StatelessWidget {
                         elevation: 4,
                       ),
                       onPressed: () {
-                        Navigator.push(
+                        // Navigate ke home page dengan named routes
+                        // pushReplacement agar user tidak bisa back ke congrats page
+                        Navigator.pushReplacementNamed(
                           context,
-                          MaterialPageRoute(
-                            builder: (_) => HomePage(),
-                          ),
+                          AppRoutes.home,
                         );
                       },
                       child: const Text(
                         'Go To Homepage',
-                        style: TextStyle(fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
                   ),
