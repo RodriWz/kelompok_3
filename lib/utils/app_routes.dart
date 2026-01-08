@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// Import Auth Screens
+// ==================== AUTH SCREENS ====================
 import 'package:kelompok_3/screens/auth/sign_in_page.dart';
 import 'package:kelompok_3/screens/auth/sign_up_page.dart';
 import 'package:kelompok_3/screens/auth/login_succes.dart';
@@ -8,18 +8,18 @@ import 'package:kelompok_3/screens/auth/forgot_password_page.dart';
 import 'package:kelompok_3/screens/auth/new_password_page.dart';
 import 'package:kelompok_3/screens/auth/verify_code_page.dart';
 
-// Import Home Screens
+// ==================== HOME SCREENS ====================
 import 'package:kelompok_3/screens/home/home_page.dart';
 import 'package:kelompok_3/screens/home/menu_page.dart';
 import 'package:kelompok_3/screens/home/jurusan_page.dart';
 import 'package:kelompok_3/screens/home/notifikasi_page.dart';
 
-// Import Materi Screens
+// ==================== MATERI SCREENS ====================
 import 'package:kelompok_3/screens/materi/basis_data_page.dart';
 import 'package:kelompok_3/screens/materi/detail_basis_data_page.dart';
 import 'package:kelompok_3/screens/materi/penjelasan_dbms_page.dart';
 
-// Import Profile Screens
+// ==================== PROFILE SCREENS ====================
 import 'package:kelompok_3/screens/profile/profil_page.dart';
 import 'package:kelompok_3/screens/profile/edit_profil_page.dart';
 import 'package:kelompok_3/screens/profile/contact_page.dart';
@@ -31,8 +31,8 @@ class AppRoutes {
   static const String signUp = '/sign-up';
   static const String loginSuccess = '/login-success';
   static const String forgotPassword = '/forgot-password';
-  static const String newPassword = '/new-password';
   static const String verifyCode = '/verify-code';
+  static const String newPassword = '/new-password';
 
   // ==================== HOME ROUTES ====================
   static const String home = '/home';
@@ -53,13 +53,12 @@ class AppRoutes {
 
   // ==================== ROUTE GENERATOR ====================
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    // Helper function untuk ambil arguments
-    Map<String, dynamic>? getArgs() {
-      return settings.arguments as Map<String, dynamic>?;
-    }
+    Map<String, dynamic> args =
+        (settings.arguments as Map<String, dynamic>?) ?? {};
 
     switch (settings.name) {
-      // ===== AUTH ROUTES =====
+
+      // ================= AUTH =================
       case signIn:
         return MaterialPageRoute(builder: (_) => SignInPage());
 
@@ -67,27 +66,30 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => SignUpPage());
 
       case loginSuccess:
-        final email = getArgs()?['email'] as String?;
         return MaterialPageRoute(
-          builder: (_) => CongratsEduSyncPage(email: email),
+          builder: (_) => CongratsEduSyncPage(
+            email: args['email'],
+          ),
         );
 
       case forgotPassword:
         return MaterialPageRoute(builder: (_) => ForgotPasswordPage());
 
-      case newPassword:
-        final email = getArgs()?['email'] as String? ?? '';
-        return MaterialPageRoute(
-          builder: (_) => NewPasswordPage(email: email),
-        );
-
       case verifyCode:
-        final email = getArgs()?['email'] as String? ?? '';
         return MaterialPageRoute(
-          builder: (_) => VerifyCodePage(email: email),
+          builder: (_) => VerifyCodePage(
+            email: args['email'] ?? '',
+          ),
         );
 
-      // ===== HOME ROUTES =====
+      case newPassword:
+        return MaterialPageRoute(
+          builder: (_) => NewPasswordPage(
+            email: args['email'] ?? '',
+          ),
+        );
+
+      // ================= HOME =================
       case home:
         return MaterialPageRoute(builder: (_) => HomePage());
 
@@ -100,7 +102,7 @@ class AppRoutes {
       case notifikasi:
         return MaterialPageRoute(builder: (_) => NotificationPage());
 
-      // ===== MATERI ROUTES =====
+      // ================= MATERI =================
       case basisData:
         return MaterialPageRoute(builder: (_) => BasisDataPage());
 
@@ -110,7 +112,7 @@ class AppRoutes {
       case penjelasanDbms:
         return MaterialPageRoute(builder: (_) => DetailDBMSPage());
 
-      // ===== PROFILE ROUTES =====
+      // ================= PROFILE =================
       case profil:
         return MaterialPageRoute(builder: (_) => ProfilePage());
 
@@ -123,47 +125,18 @@ class AppRoutes {
       case ulasan:
         return MaterialPageRoute(builder: (_) => ReviewPage());
 
-      // ===== DEFAULT (404) =====
+      // ================= DEFAULT =================
       default:
         return MaterialPageRoute(
-          builder: (context) => Scaffold(
+          builder: (_) => Scaffold(
             appBar: AppBar(
-              title: const Text('Error'),
+              title: const Text('404'),
               backgroundColor: Colors.red,
             ),
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.error_outline,
-                    size: 80,
-                    color: Colors.red,
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    '404',
-                    style: TextStyle(
-                      fontSize: 48,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Halaman tidak ditemukan',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton.icon(
-                    onPressed: () => Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      home,
-                      (route) => false,
-                    ),
-                    icon: const Icon(Icons.home),
-                    label: const Text('Kembali ke Home'),
-                  ),
-                ],
+            body: const Center(
+              child: Text(
+                'Halaman tidak ditemukan',
+                style: TextStyle(fontSize: 18),
               ),
             ),
           ),

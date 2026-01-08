@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
-import 'verify_code_page.dart';
 import '../../services/otp_services.dart';
+import 'verify_code_page.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
 
   @override
-  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
+  State<ForgotPasswordPage> createState() =>
+      _ForgotPasswordPageState();
 }
 
-class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  final emailController = TextEditingController();
+class _ForgotPasswordPageState
+    extends State<ForgotPasswordPage> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController emailController =
+      TextEditingController();
 
   bool _isLoading = false;
 
-  bool isValidEmail(String email) {
-    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
+  bool _isValidEmail(String email) {
+    return RegExp(
+      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+    ).hasMatch(email);
   }
 
   @override
@@ -26,28 +31,38 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   }
 
   Future<void> _sendOtp() async {
+    if (_isLoading) return;
     if (!_formKey.currentState!.validate()) return;
+
+    final email = emailController.text.trim();
 
     setState(() => _isLoading = true);
 
     try {
-      await OtpService.sendOtp(emailController.text.trim());
+      await OtpService.sendOtp(email);
 
       if (!mounted) return;
 
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) =>
-              VerifyCodePage(email: emailController.text.trim()),
+          builder: (_) => VerifyCodePage(email: email),
         ),
       );
     } catch (e) {
+      if (!mounted) return;
+
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Gagal mengirim OTP')),
+        const SnackBar(
+          content: Text(
+            'Gagal mengirim OTP, silakan coba lagi',
+          ),
+        ),
       );
     } finally {
-      if (mounted) setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -88,7 +103,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   if (value == null || value.isEmpty) {
                     return 'Email tidak boleh kosong';
                   }
-                  if (!isValidEmail(value)) {
+                  if (!_isValidEmail(value)) {
                     return 'Format email tidak valid';
                   }
                   return null;
@@ -103,7 +118,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 height: 48,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2C46A4),
+                    backgroundColor:
+                        const Color(0xFF2C46A4),
                   ),
                   onPressed: _isLoading ? null : _sendOtp,
                   child: _isLoading
@@ -117,7 +133,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         )
                       : const Text(
                           'Confirm Email',
-                          style: TextStyle(color: Colors.white),
+                          style:
+                              TextStyle(color: Colors.white),
                         ),
                 ),
               ),

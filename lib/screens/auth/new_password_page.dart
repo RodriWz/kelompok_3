@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kelompok_3/utils/app_routes.dart';
 
 class NewPasswordPage extends StatefulWidget {
@@ -15,11 +16,14 @@ class NewPasswordPage extends StatefulWidget {
 
 class _NewPasswordPageState extends State<NewPasswordPage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
-  
+  final TextEditingController passwordController =
+      TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -28,15 +32,28 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
     super.dispose();
   }
 
-  void _resetPassword() {
-    if (_formKey.currentState!.validate()) {
-      
-      
-      // Show success dialog
+  Future<void> _resetPassword() async {
+    if (!_formKey.currentState!.validate()) return;
+    if (_isLoading) return;
+
+    setState(() => _isLoading = true);
+
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (user == null) {
+        throw Exception('User belum login');
+      }
+
+      await user.updatePassword(passwordController.text);
+
+      if (!mounted) return;
+
+      // SUCCESS DIALOG
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => AlertDialog(
+        builder: (_) => AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -56,8 +73,11 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF142B6F),
                 ),
-                onPressed: () {
-                  // Navigate to sign in dan hapus semua history
+                onPressed: () async {
+                  await FirebaseAuth.instance.signOut();
+
+                  if (!mounted) return;
+
                   Navigator.pushNamedAndRemoveUntil(
                     context,
                     AppRoutes.signIn,
@@ -70,6 +90,20 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
           ],
         ),
       );
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Gagal reset password: ${e.toString()}',
+          ),
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -93,7 +127,6 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Title
                 const Text(
                   'Password Baru',
                   style: TextStyle(
@@ -102,8 +135,6 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                
-                // Subtitle
                 Text(
                   'Buat password baru untuk\n${widget.email}',
                   style: const TextStyle(
@@ -113,7 +144,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                 ),
                 const SizedBox(height: 40),
 
-                // Password Field
+                // PASSWORD
                 const Text(
                   'Password Baru',
                   style: TextStyle(
@@ -134,21 +165,12 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                             ? Icons.visibility_off
                             : Icons.visibility,
                       ),
-                      onPressed: () {
-                        setState(() {
-                          _obscurePassword = !_obscurePassword;
-                        });
-                      },
+                      onPressed: () =>
+                          setState(() => _obscurePassword =
+                              !_obscurePassword),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(
-                        color: Color(0xFF142B6F),
-                        width: 2,
-                      ),
                     ),
                   ),
                   validator: (value) {
@@ -163,7 +185,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                 ),
                 const SizedBox(height: 24),
 
-                // Confirm Password Field
+                // CONFIRM PASSWORD
                 const Text(
                   'Konfirmasi Password',
                   style: TextStyle(
@@ -184,21 +206,12 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                             ? Icons.visibility_off
                             : Icons.visibility,
                       ),
-                      onPressed: () {
-                        setState(() {
-                          _obscureConfirmPassword = !_obscureConfirmPassword;
-                        });
-                      },
+                      onPressed: () => setState(() =>
+                          _obscureConfirmPassword =
+                              !_obscureConfirmPassword),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(
-                        color: Color(0xFF142B6F),
-                        width: 2,
-                      ),
                     ),
                   ),
                   validator: (value) {
@@ -213,26 +226,31 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                 ),
                 const SizedBox(height: 40),
 
-                // Reset Button
+                // BUTTON
                 SizedBox(
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton(
+                    onPressed: _isLoading ? null : _resetPassword,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF142B6F),
+                      backgroundColor:
+                          const Color(0xFF142B6F),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    onPressed: _resetPassword,
-                    child: const Text(
-                      'Reset Password',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                    ),
+                    child: _isLoading
+                        ? const CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                        : const Text(
+                            'Reset Password',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
                   ),
                 ),
               ],
